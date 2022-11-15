@@ -33,7 +33,8 @@ public class AccountRegistrationController {
     private final AccountService accountService;
 
     @PostMapping
-    public HttpEntity<AccountRegistrationResponse> register(@RequestBody @Valid AccountRegistrationRequest accountRegistrationRequest) throws AccountAlreadyExistsException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountRegistrationResponse register(@RequestBody @Valid AccountRegistrationRequest accountRegistrationRequest) throws AccountAlreadyExistsException {
 
         Account saveAccount = accountService.save(
                 accountRegistrationRequest.getFirstName(),
@@ -48,26 +49,26 @@ public class AccountRegistrationController {
         response.setCode(ResponseCode.ACCOUNT_CREATED.toString());
         response.setMessage("Account created!");
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public List<GetAccount> getAllAccounts() {
-        List<GetAccount> response = new ArrayList<>();
-
-        for (Account account : accountService.getAllAccounts()) {
-            GetAccount entry = new GetAccount();
-            entry.setId(account.getId());
-            entry.setFirstName(account.getFirstName());
-            entry.setLastName(account.getLastName());
-            entry.setMiddleName(account.getMiddleName());
-            entry.setEmail(account.getEmail());
-
-            response.add(entry);
-        }
-
         return response;
     }
+
+//    @GetMapping
+//    public List<GetAccount> getAllAccounts() {
+//        List<GetAccount> response = new ArrayList<>();
+//
+//        for (Account account : accountService.getAllAccounts()) {
+//            GetAccount entry = new GetAccount();
+//            entry.setId(account.getId());
+//            entry.setFirstName(account.getFirstName());
+//            entry.setLastName(account.getLastName());
+//            entry.setMiddleName(account.getMiddleName());
+//            entry.setEmail(account.getEmail());
+//
+//            response.add(entry);
+//        }
+//
+//        return response;
+//    }
 
     @GetMapping("/{id}")
     public GetAccount getAccountById(@PathVariable String id) {

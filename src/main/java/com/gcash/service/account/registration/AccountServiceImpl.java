@@ -17,6 +17,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account save(String firstName, String lastName, String middleName, String email, String password) throws AccountAlreadyExistsException {
 
+        Optional<Account> accountFoundByEmail = accountRepository.findByEmail(email);
+        if (accountFoundByEmail.isPresent()) {
+            throw new AccountAlreadyExistsException("Email " + email + " already registered!");
+        }
+
         Account account = new Account();
         account.setFirstName(firstName);
         account.setLastName(lastName);
