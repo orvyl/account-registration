@@ -15,4 +15,5 @@ public interface AccountService {
      */
     Account getById(String id) throws AccountNotFoundException;
 
+    void updateAccount(String id, String firstName, String middleName, String lastName) throws AccountNotFoundException;
 }

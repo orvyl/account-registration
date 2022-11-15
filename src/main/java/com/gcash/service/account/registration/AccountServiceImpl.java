@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -39,5 +40,18 @@ public class AccountServiceImpl implements AccountService {
         }
 
         return result.get();
+    }
+
+    @Override
+    public void updateAccount(String id, String firstName, String middleName, String lastName) throws AccountNotFoundException {
+        Account account = getById(id);
+        account.setFirstName(firstName);
+        account.setLastName(lastName);
+
+        if (Objects.nonNull(middleName)) {
+            account.setMiddleName(middleName);
+        }
+
+        accountRepository.save(account);
     }
 }

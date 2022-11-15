@@ -4,7 +4,11 @@ import com.gcash.service.account.registration.model.Account;
 import com.gcash.service.account.registration.payload.AccountRegistrationRequest;
 import com.gcash.service.account.registration.payload.AccountRegistrationResponse;
 import com.gcash.service.account.registration.payload.GetAccount;
+import com.gcash.service.account.registration.payload.UpdateAccountRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +33,7 @@ public class AccountRegistrationController {
     private final AccountService accountService;
 
     @PostMapping
-    public AccountRegistrationResponse register(@RequestBody @Valid AccountRegistrationRequest accountRegistrationRequest) throws AccountAlreadyExistsException {
+    public HttpEntity<AccountRegistrationResponse> register(@RequestBody @Valid AccountRegistrationRequest accountRegistrationRequest) throws AccountAlreadyExistsException {
 
         Account saveAccount = accountService.save(
                 accountRegistrationRequest.getFirstName(),
@@ -44,7 +48,7 @@ public class AccountRegistrationController {
         response.setCode(ResponseCode.ACCOUNT_CREATED.toString());
         response.setMessage("Account created!");
 
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -67,17 +71,31 @@ public class AccountRegistrationController {
 
     @GetMapping("/{id}")
     public GetAccount getAccountById(@PathVariable String id) {
-        Account account = accountService.getById(id);
+        try {
+            Account account = accountService.getById(id);
 
-        GetAccount entry = new GetAccount();
-        entry.setId(account.getId());
-        entry.setFirstName(account.getFirstName());
-        entry.setLastName(account.getLastName());
-        entry.setMiddleName(account.getMiddleName());
-        entry.setEmail(account.getEmail());
+            GetAccount entry = new GetAccount();
+            entry.setId(account.getId());
+            entry.setFirstName(account.getFirstName());
+            entry.setLastName(account.getLastName());
+            entry.setMiddleName(account.getMiddleName());
+            entry.setEmail(account.getEmail());
 
-        return entry;
+            return entry;
+        } catch (AccountNotFoundException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+
+        return null;
     }
 
     //TODO [HW3] Create a service function that updates firstName, lastName, and/or middleName
+    @PutMapping("/{id}")
+    public void updateAccount(@PathVariable String id, @Valid @RequestBody UpdateAccountRequest request) {
+        try {
+            accountService.updateAccount(id, request.getFirstName(), request.getMiddleName(), request.getLastName());
+        } catch (AccountNotFoundException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
 }
