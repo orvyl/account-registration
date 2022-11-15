@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-@ResponseBody
 public class ServiceExceptionHandler {
 
     @ExceptionHandler(value = {AccountAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public Error accountAlreadyRegistered(AccountAlreadyExistsException exception) {
         Error error = new Error();
         error.setMessage(exception.getMessage());

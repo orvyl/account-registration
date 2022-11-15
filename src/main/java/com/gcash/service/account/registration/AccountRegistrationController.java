@@ -46,29 +46,29 @@ public class AccountRegistrationController {
         //TODO [HW2] return a populated AccountRegistrationResponse instead of null
         AccountRegistrationResponse response = new AccountRegistrationResponse();
         response.setAccountId(saveAccount.getId());
-        response.setCode(ResponseCode.ACCOUNT_CREATED.toString());
+        response.setCode(ResponseCode.ACCOUNT_CREATED);
         response.setMessage("Account created!");
 
         return response;
     }
 
-//    @GetMapping
-//    public List<GetAccount> getAllAccounts() {
-//        List<GetAccount> response = new ArrayList<>();
-//
-//        for (Account account : accountService.getAllAccounts()) {
-//            GetAccount entry = new GetAccount();
-//            entry.setId(account.getId());
-//            entry.setFirstName(account.getFirstName());
-//            entry.setLastName(account.getLastName());
-//            entry.setMiddleName(account.getMiddleName());
-//            entry.setEmail(account.getEmail());
-//
-//            response.add(entry);
-//        }
-//
-//        return response;
-//    }
+    @GetMapping
+    public List<GetAccount> getAllAccounts() {
+        List<GetAccount> response = new ArrayList<>();
+
+        for (Account account : accountService.getAllAccounts()) {
+            GetAccount entry = new GetAccount();
+            entry.setId(account.getId());
+            entry.setFirstName(account.getFirstName());
+            entry.setLastName(account.getLastName());
+            entry.setMiddleName(account.getMiddleName());
+            entry.setEmail(account.getEmail());
+
+            response.add(entry);
+        }
+
+        return response;
+    }
 
     @GetMapping("/{id}")
     public GetAccount getAccountById(@PathVariable String id) {

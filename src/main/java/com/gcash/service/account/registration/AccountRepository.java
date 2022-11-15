@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, String> {
 
-    Optional<Account> findByEmail(String email);
+    Optional<Account> findByEmail(String email);// select * from Account where email = :email
 
 }
