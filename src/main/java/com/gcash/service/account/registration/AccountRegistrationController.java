@@ -71,6 +71,7 @@ public class AccountRegistrationController {
     }
 
     @GetMapping("/{id}")
+    //TODO [ACT] Return actual error response body when account not found
     public GetAccount getAccountById(@PathVariable String id) {
         try {
             Account account = accountService.getById(id);
@@ -91,6 +92,7 @@ public class AccountRegistrationController {
     }
 
     //TODO [HW3] Create a service function that updates firstName, lastName, and/or middleName
+    //TODO [ACT] Return actual error response body when account not found or account already registered
     @PutMapping("/{id}")
     public void updateAccount(@PathVariable String id, @Valid @RequestBody UpdateAccountRequest request) {
         try {
@@ -99,4 +101,6 @@ public class AccountRegistrationController {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
+    //TODO [ACT] Implement delete account
 }
