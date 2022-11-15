@@ -13,6 +13,6 @@ public interface AccountService {
      * TODO [HW1] Implement an exception where if the ID is not found, throw an AccountNotFoundException.
      * This means you'll be updating the implementation to check if the account is in the database
      */
-    Account getById(String id);
+    Account getById(String id) throws AccountNotFoundException;
 
 }

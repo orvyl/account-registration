@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +32,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getById(String id) {
+    public Account getById(String id) throws AccountNotFoundException {
         Optional<Account> result = accountRepository.findById(id);
-        return result.orElseThrow();
+        if (result.isEmpty()) {
+            throw new AccountNotFoundException("Account " + id + " not found!");
+        }
+
+        return result.get();
     }
 }

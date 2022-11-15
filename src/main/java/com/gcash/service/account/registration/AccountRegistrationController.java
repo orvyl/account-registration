@@ -64,6 +64,8 @@ public class AccountRegistrationController {
     public GetAccount getAccountById(@PathVariable String id) {
         Account account = accountService.getById(id);
 
+
+
         GetAccount entry = new GetAccount();
         entry.setId(account.getId());
         entry.setFirstName(account.getFirstName());
