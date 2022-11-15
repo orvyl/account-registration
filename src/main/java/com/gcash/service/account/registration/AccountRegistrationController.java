@@ -31,7 +31,7 @@ public class AccountRegistrationController {
     @PostMapping
     public AccountRegistrationResponse register(@RequestBody @Valid AccountRegistrationRequest accountRegistrationRequest) throws AccountAlreadyExistsException {
 
-        accountService.save(
+        Account saveAccount = accountService.save(
                 accountRegistrationRequest.getFirstName(),
                 accountRegistrationRequest.getLastName(),
                 accountRegistrationRequest.getMiddleName(),
@@ -39,7 +39,12 @@ public class AccountRegistrationController {
                 accountRegistrationRequest.getPassword());
 
         //TODO [HW2] return a populated AccountRegistrationResponse instead of null
-        return null;
+        AccountRegistrationResponse response = new AccountRegistrationResponse();
+        response.setAccountId(saveAccount.getId());
+        response.setCode(ResponseCode.ACCOUNT_CREATED.toString());
+        response.setMessage("Account created!");
+
+        return response;
     }
 
     @GetMapping
@@ -63,8 +68,6 @@ public class AccountRegistrationController {
     @GetMapping("/{id}")
     public GetAccount getAccountById(@PathVariable String id) {
         Account account = accountService.getById(id);
-
-
 
         GetAccount entry = new GetAccount();
         entry.setId(account.getId());
